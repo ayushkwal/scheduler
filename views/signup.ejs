@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+</head>
+<style>
+    h1 {
+        text-align: center;
+        color: purple;
+        font-family: cursive;
+        font-size: 60px;
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid purple;
+        padding: 20px 20px;
+        margin: auto;
+        max-width: 60%;
+    }
+    
+    form input {
+        margin: 20px 20px;
+        padding: 10px 20px;
+        font-size: 20px;
+        border-radius: 20px;
+        border: 1px solid black;
+    }
+    
+    .err {
+        font-family: cursive;
+        color: red;
+        font-size: 20px;
+    }
+    
+    label {
+        font-size: 17px;
+        font-family: cursive;
+        margin-top: 10px;
+    }
+    
+    button {
+        padding: 6px 22px;
+        color: rgb(5, 3, 29);
+        background-color: white;
+        font-size: 19px;
+        font-family: cursive;
+        border: 2px solid black;
+    }
+</style>
+
+<body>
+    <h1>Signup Page</h1>
+    <form method="POST" action="/signup">
+        <div class='err' id='emailError'>
+
+        </div>
+        <input type="text" name="email" placeholder="Email">
+        <div class='err' id='passwordError'>
+
+        </div>
+        <input type="password" name="password" placeholder="Password">
+        <div class='err' id='connectionError'></div><br>
+        <button type="submit">Register</button>
+        <label>Already have an account <a href="login">Login Here</a></label>
+    </form>
+</body>
+<script>
+    let emailerror = document.getElementById('emailError');
+    let passworderror = document.getElementById('passwordError');
+    let connectionerror = document.getElementById('connectionError');
+    let form = document.querySelector('form');
+    form.addEventListener('submit', async(e) => {
+        emailerror.textContent = '';
+        passworderror.textContent = '';
+        const email = form.email.value;
+        const password = form.password.value;
+        e.preventDefault();
+        try {
+            const res = await fetch('/signup', {
+                method: 'post',
+                body: JSON.stringify({
+                    email,
+                    password
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await res.json();
+            console.log(data);
+            if (data.errors) {
+                emailerror.textContent = data.errors.email;
+                passworderror.textContent = data.errors.password;
+                connectionerror.textContent = data.errors.connection;
+            }
+            if (data.saving) {
+                location.assign('/home');
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
+    });
+</script>
+
+</html>
