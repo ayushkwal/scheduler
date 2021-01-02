@@ -123,7 +123,9 @@ userSchema.post('save', function(doc, next) { //both doc and next will be parame
 
 //creating model
 // mongoose.model('database name',userSchema);
-var data = mongoose.model('detail', userSchema);
+const data = mongoose.model('detail', userSchema);
+module.exports = data;
+
 
 
 
@@ -182,20 +184,10 @@ module.exports = function(app) {
 
     });
 
-    // function requireAuth(req, res, next) {
-    //     const token = req.cookies.jwt;
-    //     if (token) {
-    //         const verify = jwt.verify(token, 'ayush secret key', function(err, decodeToken) {
-    //             if (verify) {
-    //                 next();
-    //             } else {
-    //                 res.redirect('/login');
-    //             }
-    //         })
-
-    //     } else {
-    //         res.redirect('/login');
-    //     }
-    // }
+    //Logout user
+    app.get('/logout', function(req, res) {
+        res.cookie('jwt', '', { maxAge: 1 });
+        res.redirect('/login');
+    });
 
 }
