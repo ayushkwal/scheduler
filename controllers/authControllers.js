@@ -67,7 +67,8 @@ function createToken(id) {
 }
 
 //mongoose connection
-mongoose.connect('mongodb+srv://ayush:ayush1002@cluster0.jawu5.mongodb.net/Authentication?retryWrites=true&w=majority');
+// I hide the password for security purpose.
+mongoose.connect('mongodb+srv://ayush:<password>@cluster0.jawu5.mongodb.net/Authentication?retryWrites=true&w=majority');
 
 //creating blueprint of data i.e. Schema
 const userSchema = new mongoose.Schema({
