@@ -2,14 +2,276 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>homepage</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>homepage</title>
 </head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+  rel="stylesheet" />
+
+<link rel="stylesheet" href="./style.css">
+<style>
+  #schedulerbg {
+    background-color: #f8f9d2;
+    background-image: linear-gradient(315deg, #f8f9d2 0%, #e8dbfc 74%);
+  }
+
+  #schedulerbg h1 {
+    color: 'crimson';
+    font-size: 42px;
+    text-align: left;
+    margin-left: 30px;
+    font-style: oblique;
+  }
+  #settingschedule{
+    position:absolute;
+    top:5%;
+    right:5%;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+  #settingschedule a{
+    border: 1px solid gray;
+    text-decoration: none;
+    padding:10px 10px;
+    font-size: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+
+</style>
 
 <body>
+  <div id = "settingschedule"> <a href="setSchedule">Set Schedule</a></div>
+  <div id="schedulerbg">
+    <h1>Scheduler</h1>
 
-    <a href="logout">Logout</a>
+    <div id="teacher"><span style="margin-left: 30px;font-size: 17px;color:gray;position: absolute;margin-right: 125px;margin-bottom: 50px;" >Selct Teacher</span>
+      <select name="teacher" id="teachers" onchange="getSelectValue()" >
+        <option defaul value="">Select Teacher</option>
+        <option value="Aman Sir">Aman Sir</option>
+        <option value="Ayush Sir">Ayush Sir</option>
+        <option value="Ahmed Sir">Ahmed Sir</option>
+        <option value="Aditya Pratap">Aditya Pratap</option>
+      </select>
+      <button style="outline: none;border: none;margin-left: 20px; cursor: pointer;" onclick="fetchSchedule()">Get Schedule</button>
+    </div>
+  </div>
+
+ 
+
+    <div class="container" id="container">
+
+      <div class="calendar">
+        <div class="month">
+          <i class="fas fa-angle-left prev"></i>
+          <div class="date">
+            <h1></h1>
+            <p></p>
+          </div>
+          <i class="fas fa-angle-right next"></i>
+        </div>
+        <div class="weekdays">
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+        </div>
+        <div class="days"></div>
+      </div>
+      <div style="height: 0px;"><br></div>
+      <div class="timebox" id="timingboxes">
+        <!-- only classes for 6am to 8pm  -->
+        <div class="morning" id="morn">
+          <div id = "6am" class="timing"><strong>At 6:00 AM </strong> Pepcoding 1</div>
+            <!-- <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div>
+            <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div>
+            <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div>
+            <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div> -->
+            <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div>
+            <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div>
+        </div>
+        <div class="evening" id="even">
+          <div id = "1pm" class="timing"><strong>At 01:00 PM </strong>PepHiring HR</div>
+          <div id = "1pm" class="timing"><strong>At 01:00 PM </strong>PepHiring HR</div>
+          <!-- <div id = "1pm" class="timing"><strong>At 01:00 PM </strong>PepHiring HR</div>
+          <div id = "1pm" class="timing"><strong>At 01:00 PM </strong>PepHiring HR</div>
+          <div id = "1pm" class="timing"><strong>At 01:00 PM </strong>PepHiring HR</div>
+            <div id = "8pm" class="timing"><strong>At 08:00 PM  </strong>Pepcoding 2</div> -->
+        </div>
+      </div>
+
+  </div>
 </body>
 
+
+
+
+
+
+
+
+<script>
+  var d=0;
+  var m=0;
+  const date = new Date();
+
+  const renderCalendar = () => {
+    date.setDate(1);
+
+    const monthDays = document.querySelector(".days");
+
+    const lastDay = new Date(
+      date.getFullYear(),
+      date.getMonth() + 1,
+      0
+    ).getDate();
+
+    const prevLastDay = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      0
+    ).getDate();
+
+    const firstDayIndex = date.getDay();
+
+    const lastDayIndex = new Date(
+      date.getFullYear(),
+      date.getMonth() + 1,
+      0
+    ).getDay();
+
+    const nextDays = 7 - lastDayIndex - 1;
+
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    document.querySelector(".date h1").innerHTML = months[date.getMonth()];
+    document.querySelector(".date p").innerHTML = new Date().toDateString();
+    let days = "";
+
+    //for only previous daYS
+    for (let x = firstDayIndex; x > 0; x--) {
+      days += `<div class="prev-date">${prevLastDay - x + 1}</div>`;
+    }
+    //real time for which date is active
+    for (let i = 1; i <= lastDay; i++) {
+      if (
+        i === new Date().getDate() &&
+        date.getMonth() === new Date().getMonth()
+      ) {
+        days += `<div class="today">${i}</div>`;
+      } else {
+        days += `<div onclick=fetchdate(${i},${date.getMonth()}) >${i}</div>`;
+      }
+    }
+    // for next days only 
+    for (let j = 1; j <= nextDays; j++) {
+      days += `<div class="next-date">${j}</div>`;
+      monthDays.innerHTML = days;
+    }
+  };
+
+  document.querySelector(".prev").addEventListener("click", () => {
+    date.setMonth(date.getMonth() - 1);
+    renderCalendar();
+  });
+
+  document.querySelector(".next").addEventListener("click", () => {
+    date.setMonth(date.getMonth() + 1);
+    renderCalendar();
+  });
+
+  renderCalendar();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const fetchdate = (dayer, monther) => {
+    d=dayer;
+    m = monther;
+    // console.log(dayer, monther + 1);
+  }
+
+
+  const morning = document.getElementById('morn');
+    const evening = document.getElementById('even');
+
+
+  function fetchSchedule(){
+    morning.innerHTML=``;
+    evening.innerHTML=``;
+    const name = document.getElementById('teachers').value;
+    console.log(name,'is last name');
+  if(name=='null'||name=='')
+  {
+    console.log(name)
+    alert('Hey! You need to select Teacher');
+  }
+  else{
+    if(d==0)  alert('Select Date');
+    console.log('hey2')
+    console.log(name)
+    getresult(name,d,m);
+    // getSelectValue();
+  }
+}
+
+async function getresult(name,date,month) {
+    console.log('I reached here')
+    console.log(name,month,date)
+    const dataget = await fetch('/123', ({
+      method: 'POST',
+      body: JSON.stringify({ teacherName: name, month: month, date: date }),
+      headers: { 'Content-type': 'application/json' }
+    }))
+
+    const camedata = await dataget.json();
+    const me = JSON.stringify(camedata.rows);
+    console.log('gotcha it!', me, camedata)
+  
+    let morndata = '';
+    let evendata = '';
+    console.log(camedata.rows.length - 1, camedata, 'is the last data');
+    console.log(camedata.rows[0].teacherName);
+    for (let i = 0; i < camedata.rows.length; i++) {
+      if (camedata.rows[i].meriddian == 'am') { morndata += ` <div id = "${camedata.rows[0].time}" class="timing"><strong>At ${camedata.rows[0].time}:00 AM </strong> ${camedata.rows[0].lectureName}</div>`; }
+      else { evendata += ` <div id = "${camedata.rows[0].time}" class="timing"><strong>At ${camedata.rows[0].time}:00 PM </strong> ${camedata.rows[0].lectureName}</div>` }
+    }
+    console.log('data are', morndata, evendata)
+    morning.innerHTML = morndata;
+    evening.innerHTML = evendata;
+  }
+
+</script>
 </html>
+
+
+<!-- 9827349177 -->

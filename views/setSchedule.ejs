@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>homepage</title>
+</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+  rel="stylesheet" />
+
+<link rel="stylesheet" href="./style.css">
+
+<style>
+  * {
+    margin: 1px;
+  }
+
+  #setschedule h1 {
+    color: 'gray';
+    font-size: 50px;
+    margin-top: 30px;
+  }
+
+  .container {
+    background-color: #a4508b;
+    background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  #formdata {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 100px;
+  }
+
+  #formdata input {
+    padding: 5px 20px;
+    color: 'gray';
+    border-radius: 8px;
+    background-color: #f2f2f2;
+    margin-top: 30px;
+    font-size: 22px;
+    text-align: center;
+    outline: none;
+    border: none
+  }
+
+  label {}
+
+  h4 {
+    color: #fff;
+    font-size: 18px;
+  }
+
+  #btn {
+    padding: 9px 9px;
+    font-size: 13px;
+    background-color: rgb(236, 218, 218);
+    outline: none;
+    border: none;
+    margin-top: 16px;
+    border-radius: 3px;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <div id="setschedule">
+      <h1><strong>Set Schedule</strong></h1>
+      <h4>You are logged in as Admin</h4>
+    </div>
+    <form id="formdata">
+      <div id="result"></div>
+      <input type="text" placeholder="Teacher Name" name="teachername">
+      <input type="text" placeholder="Lecture At" name="lecturename">
+      <input type="date" name="date">
+      <input type="time" name="time">
+      <button onsubmit="submitHandler()" id="btn">Schedule Now</button>
+
+    </form>
+  </div>
+
+</body>
+<script>
+ 
+ 
+  const form = document.querySelector('form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    var t_name = e.target.teachername.value
+    var m_name = e.target.date.value.substr(5, 2)
+    var time_is = e.target.time.value.substr(0, 2) > 12 ? e.target.time.value.substr(0, 2) - 12 : e.target.time.value.substr(0, 2);
+    var mer = e.target.time.value.substr(0, 2) >= 12 ? "am" : "pm";
+    var l_name = e.target.lecturename.value;
+    var dt = e.target.date.value.substr(8, 2);
+    console.log(dt,'is date');
+    const res = await fetch('/submitTeacherSchedule', {
+      method: 'post',
+      body: JSON.stringify({ teacherName: t_name, month: m_name, time: time_is, meriddian: mer, lectureName: l_name, date: dt }),
+      headers: { 'Content-type': 'application/json' }
+    })
+    const data = await res.json();
+    if (data.error) document.getElementById('result').innerHTML = `<h4>${data.error}</h4>`
+    else document.getElementById('result').innerHTML = `<h4>${data.success}</h4>`
+  })
+
+</script>
+
+</html>

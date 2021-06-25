@@ -7,10 +7,16 @@
     <title>Login Page</title>
 </head>
 <style>
+    body{
+    background-color: #f8f9d2;
+    background-image: linear-gradient(315deg, #f8f9d2 0%, #e8dbfc 74%);
+    height:100%
+    
+    }
+    
     h1 {
         text-align: center;
-        color: purple;
-        font-family: cursive;
+        color: maroon;
         font-size: 60px;
     }
     
@@ -19,10 +25,11 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        border: 2px solid purple;
         padding: 20px 20px;
         margin: auto;
         max-width: 60%;
+        background-color: #f6f0c4;
+background-image: linear-gradient(315deg, #f6f0c4 0%, #d99ec9 74%);
     }
     
     form input {
@@ -30,7 +37,8 @@
         padding: 10px 20px;
         font-size: 20px;
         border-radius: 20px;
-        border: 1px solid black;
+        border: 1px solid #f2f2f2;
+        outline: none;
     }
     
     .err {
@@ -58,7 +66,7 @@
 </style>
 
 <body>
-
+    <div id="container">
     <h1>Login Page</h1>
     <form method="POST" action="/login">
         <div class='err' id='emailError'>
@@ -75,6 +83,7 @@
         <label>Not Registered? <a href="signup">Register Here</a></label>
 
     </form>
+</div>
 </body>
 <script>
     let emailerror = document.getElementById('emailError');
