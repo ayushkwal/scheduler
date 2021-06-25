@@ -73,7 +73,10 @@ app.get('/setschedule',requireAuth,(req,res)=>{
     res.render('setSchedule.ejs');
 })
 
+
+var port = process.env.PORT || 1337;
+
 //listen server
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log('Listening');
 });
