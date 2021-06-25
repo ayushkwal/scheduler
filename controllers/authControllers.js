@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var urlencodedparser = bodyParser.urlencoded({ extended: false });
 const { isEmail } = require('validator');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 
