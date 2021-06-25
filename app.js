@@ -65,6 +65,9 @@ app.post('/123',(req,res)=>{
 })
 
 controller(app);
+app.get('/', (req, res) => {
+    res.render('home.ejs');
+});
 
 app.get('/home', (req, res) => {
     res.render('home.ejs');
