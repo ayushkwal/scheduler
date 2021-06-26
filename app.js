@@ -6,11 +6,12 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const mysql = require('mysql');
+const {mySQLPassword} = require('./configkey.js');
 
 const mysqlConnection = mysql.createConnection({
     host:"localhost",
     user:"root",
-    password:"password",
+    password:mySQLPassword,
     database:"pepping",
     multipleStatements:true
 })
@@ -83,3 +84,4 @@ var port = process.env.PORT || 1337;
 app.listen(port, () => {
     console.log('Listening');
 });
+

@@ -43,12 +43,12 @@
 </style>
 
 <body>
-  <div id = "settingschedule"> <a href="setSchedule">Set Schedule</a></div>
+  <div id = "settingschedule"> <a href="setSchedule">Set Schedule</a><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)" style="padding-left: 30px;padding-top: 15px;"><img src="./trash.png" width="50px" height="50px"></div></div>
   <div id="schedulerbg">
     <h1>Scheduler</h1>
 
-    <div id="teacher"><span style="margin-left: 30px;font-size: 17px;color:gray;position: absolute;margin-right: 125px;margin-bottom: 50px;" >Selct Teacher</span>
-      <select name="teacher" id="teachers" onchange="getSelectValue()" >
+    <div id="teacher"><span style="margin-left: 30px;font-size: 11px;color:gray;position: absolute;margin-right: 125px;margin-bottom: 50px;" >Selct Teacher</span>
+      <select name="teacher" id="teachers" >
         <option defaul value="">Select Teacher</option>
         <option value="Aman Sir">Aman Sir</option>
         <option value="Ayush Sir">Ayush Sir</option>
@@ -62,6 +62,7 @@
  
 
     <div class="container" id="container">
+      
 
       <div class="calendar">
         <div class="month">
@@ -85,27 +86,14 @@
       </div>
       <div style="height: 0px;"><br></div>
       <div class="timebox" id="timingboxes">
-        <!-- only classes for 6am to 8pm  -->
+        
         <div class="morning" id="morn">
-          <div id = "6am" class="timing"><strong>At 6:00 AM </strong> Pepcoding 1</div>
-            <!-- <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div>
-            <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div>
-            <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div>
-            <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div> -->
-            <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div>
-            <div id = "12am" class="timing"><strong>At 12:00 PM </strong>PepHiring HR</div>
         </div>
         <div class="evening" id="even">
-          <div id = "1pm" class="timing"><strong>At 01:00 PM </strong>PepHiring HR</div>
-          <div id = "1pm" class="timing"><strong>At 01:00 PM </strong>PepHiring HR</div>
-          <!-- <div id = "1pm" class="timing"><strong>At 01:00 PM </strong>PepHiring HR</div>
-          <div id = "1pm" class="timing"><strong>At 01:00 PM </strong>PepHiring HR</div>
-          <div id = "1pm" class="timing"><strong>At 01:00 PM </strong>PepHiring HR</div>
-            <div id = "8pm" class="timing"><strong>At 08:00 PM  </strong>Pepcoding 2</div> -->
         </div>
       </div>
-
-  </div>
+       </div>
+ 
 </body>
 
 
@@ -262,16 +250,35 @@ async function getresult(name,date,month) {
     console.log(camedata.rows.length - 1, camedata, 'is the last data');
     console.log(camedata.rows[0].teacherName);
     for (let i = 0; i < camedata.rows.length; i++) {
-      if (camedata.rows[i].meriddian == 'am') { morndata += ` <div id = "${camedata.rows[0].time}" class="timing"><strong>At ${camedata.rows[0].time}:00 AM </strong> ${camedata.rows[0].lectureName}</div>`; }
-      else { evendata += ` <div id = "${camedata.rows[0].time}" class="timing"><strong>At ${camedata.rows[0].time}:00 PM </strong> ${camedata.rows[0].lectureName}</div>` }
+      if (camedata.rows[i].meriddian == 'am') { morndata += ` <div draggable="true" ondragstart="drag(event)" id = "${camedata.rows[i].time}" class="timing"><strong>At ${camedata.rows[i].time}:00 AM </strong> ${camedata.rows[i].lectureName}</div>`; }
+      else { evendata += ` <div draggable="true" ondragstart="drag(event)" id = "${camedata.rows[i].time}" class="timing"><strong>At ${camedata.rows[i].time}:00 PM </strong> ${camedata.rows[i].lectureName}</div>` }
     }
     console.log('data are', morndata, evendata)
     morning.innerHTML = morndata;
     evening.innerHTML = evendata;
   }
 
+function allowDrop(ev) {
+ev.preventDefault();
+}
+
+function drag(ev) {
+ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  document.getElementById(data).style.display='none';
+  
+  // deleteData();
+}
+function deletedata(){
+
+}
+
+
+
 </script>
 </html>
 
-
-<!-- 9827349177 -->
